@@ -21,8 +21,7 @@ abstract contract NounishERC721 is ERC721 {
         require(to != address(0), "INVALID_RECIPIENT");
 
         require(
-            msg.sender == from || isApprovedForAll[from][msg.sender] || msg.sender == getApproved[id],
-            "NOT_AUTHORIZED"
+            msg.sender == from || isApprovedForAll[from][msg.sender] || msg.sender == getApproved[id], "NOT_AUTHORIZED"
         );
 
         // Underflow of the sender's balance is impossible because we check for

@@ -10,16 +10,48 @@ contract NounishWhiteElephantTest is Test {
     event Open(bytes32 indexed gameID, address indexed player, uint256 indexed tokenId);
     event Steal(bytes32 indexed gameID, address indexed stealer, uint256 indexed tokenId, address stolenFrom);
 
-    WhiteElephant public whiteElephant;
+    NounishWhiteElephant public whiteElephant;
     WhiteElephant.Game game;
 
     function setUp() public {
-        whiteElephant = new NounishWhiteElephant();
+        whiteElephant = new NounishWhiteElephant(0);
         address[] memory participants = new address[](3);
         participants[0] = address(1);
         participants[1] = address(2);
         participants[2] = address(3);
         game = WhiteElephant.Game({participants: participants, nonce: block.timestamp});
+    }
+
+    /// start game ///
+    function testRevertsIfFeeInsufficient() public {
+        whiteElephant = new NounishWhiteElephant(0.01 ether);
+        vm.deal(address(this), 1 ether);
+        vm.expectRevert(NounishWhiteElephant.InsufficientPayment.selector);
+        whiteElephant.startGame{value: 0.001 ether * 3}(game);
+    }
+
+    function testDoesNotRevertsIfFeeSufficient() public {
+        whiteElephant = new NounishWhiteElephant(0.01 ether);
+        vm.deal(address(this), 1 ether);
+        whiteElephant.startGame{value: 0.01 ether * 3}(game);
+        bytes32 id = whiteElephant.gameID(game);
+        assertEq(1, whiteElephant.state(id).round);
+    }
+
+    /// transferFees ///
+
+    function testTransferFeesFailsIfNotOwner() public {
+        vm.startPrank(address(1));
+        vm.expectRevert("UNAUTHORIZED");
+        whiteElephant.transferFees(address(this), 1);
+    }
+
+    function testTransferFeesWorks() public {
+        whiteElephant = new NounishWhiteElephant(0.01 ether);
+        vm.deal(address(this), 1 ether);
+        whiteElephant.startGame{value: 0.01 ether * 3}(game);
+        whiteElephant.transferFees(address(1), 0.03 ether);
+        assertEq(address(1).balance, 0.03 ether);
     }
 
     /// open ///

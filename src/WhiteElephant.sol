@@ -61,7 +61,7 @@ contract WhiteElephant {
     /// @dev reverts if `game` exists
     /// @param game Game specification, {participants: address[], nonce: uint256}
     /// @return _gameID the unique identifier for the game
-    function startGame(Game calldata game) external returns (bytes32 _gameID) {
+    function startGame(Game calldata game) public payable virtual returns (bytes32 _gameID) {
         _gameID = gameID(game);
 
         if (_state[_gameID].round != 0) {
@@ -76,7 +76,7 @@ contract WhiteElephant {
     /// @notice open a new gift
     /// @param game the game the participant caller is in and wishes to open in
     /// game = {participants: address[], nonce: uint256}
-    function open(Game calldata game) external {
+    function open(Game calldata game) public virtual {
         bytes32 _gameID = gameID(game);
 
         _checkGameOver(_gameID);
@@ -101,10 +101,10 @@ contract WhiteElephant {
     /// @dev reverts if tokenID not minted in `game`
     /// @dev reverts if token has been stolen twice already
     /// @dev reverts if tokenID was just stolen
-    /// @param game the game the participant is in and wishes to steal in 
+    /// @param game the game the participant is in and wishes to steal in
     /// game = {participants: address[], nonce: uint256}
     /// @param tokenID that token they wish to steal, must have been minted by another participant in same game
-    function steal(Game calldata game, uint256 tokenID) external {
+    function steal(Game calldata game, uint256 tokenID) public virtual {
         bytes32 _gameID = gameID(game);
 
         _checkGameOver(_gameID);
@@ -150,7 +150,7 @@ contract WhiteElephant {
     ///     uint64 lastStolenID;
     ///     uint8 round;
     /// }
-    function state(bytes32 _gameID) external view returns (GameState memory) {
+    function state(bytes32 _gameID) public view virtual returns (GameState memory) {
         return _state[_gameID];
     }
 
@@ -159,7 +159,7 @@ contract WhiteElephant {
     /// @param game the game
     /// game = {participants: address[], nonce: uint256}
     /// @return participant the address that is up to go next
-    function currentParticipantTurn(bytes32 _gameID, Game calldata game) public view returns (address) {
+    function currentParticipantTurn(bytes32 _gameID, Game calldata game) public view virtual returns (address) {
         address next = _state[_gameID].nextToGo;
         if (next != address(0)) return next;
 
@@ -169,7 +169,7 @@ contract WhiteElephant {
     /// @notice returns the unique identifier for a given game
     /// @param game, {participants: address[], nonce: uint256}
     /// @return gameID the id of the game
-    function gameID(Game calldata game) public pure returns (bytes32) {
+    function gameID(Game calldata game) public pure virtual returns (bytes32) {
         return keccak256(abi.encode(game));
     }
 
