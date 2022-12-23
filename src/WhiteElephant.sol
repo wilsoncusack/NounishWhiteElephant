@@ -49,9 +49,12 @@ contract WhiteElephant {
     event Open(bytes32 indexed gameID, address indexed player, uint256 indexed tokenId);
     event Steal(bytes32 indexed gameID, address indexed stealer, uint256 indexed tokenId, address stolenFrom);
 
-    /// @dev doesn't check for participants
-    /// address(0) or incorrect address could leave game
-    // unable to progress
+    /// @notice starts a game
+    /// @dev does not check participant addresses, address(0) or other incorrect
+    /// address could render game unable to progress
+    /// @dev reverts if `game` exists
+    /// @param game Game specification, {participants: address[], nonce: uint256}
+    /// @return _gameID the unique identifier for the game
     function startGame(Game calldata game) external returns (bytes32 _gameID) {
         _gameID = gameID(game);
 
@@ -64,6 +67,9 @@ contract WhiteElephant {
         emit StartGame(_gameID, game);
     }
 
+    /// @notice open a new gift
+    /// @param game the game the participant caller is in and wishes to open in
+    /// game = {participants: address[], nonce: uint256}
     function open(Game calldata game) external {
         bytes32 _gameID = gameID(game);
 
@@ -85,6 +91,13 @@ contract WhiteElephant {
         emit Open(_gameID, msg.sender, tokenID);
     }
 
+    /// @notice Steals NFT from another participant
+    /// @dev reverts if tokenID not minted in `game`
+    /// @dev reverts if token has been stolen twice already
+    /// @dev reverts if tokenID was just stolen
+    /// @param game the game the participant is in and wishes to steal in 
+    /// game = {participants: address[], nonce: uint256}
+    /// @param tokenID that token they wish to steal, must have been minted by another participant in same game
     function steal(Game calldata game, uint256 tokenID) external {
         bytes32 _gameID = gameID(game);
 
@@ -118,10 +131,28 @@ contract WhiteElephant {
         emit Steal(_gameID, msg.sender, tokenID, currentOwner);
     }
 
+    /// @notice returns the state of the given game ID
+    /// @param _gameID the game identifier, from gameID(game)
+    /// @return state the state of the game
+    /// struct GameState {
+    ///   uint8 round;
+    ///   bool gameOver;
+    ///   address nextToGo;
+    ///    LastStealInfo lastStealInfo;
+    /// }
+    /// struct LastStealInfo {
+    ///     uint64 lastStolenID;
+    ///     uint8 round;
+    /// }
     function state(bytes32 _gameID) external view returns (GameState memory) {
         return _state[_gameID];
     }
 
+    /// @notice returns which address can call open or steal next in a given game
+    /// @param _gameID the id of the game
+    /// @param game the game
+    /// game = {participants: address[], nonce: uint256}
+    /// @return participant the address that is up to go next
     function currentParticipantTurn(bytes32 _gameID, Game calldata game) public view returns (address) {
         address next = _state[_gameID].nextToGo;
         if (next != address(0)) return next;
@@ -129,6 +160,9 @@ contract WhiteElephant {
         return game.participants[_state[_gameID].round - 1];
     }
 
+    /// @notice returns the unique identifier for a given game
+    /// @param game, {participants: address[], nonce: uint256}
+    /// @return gameID the id of the game
     function gameID(Game calldata game) public pure returns (bytes32) {
         return keccak256(abi.encode(game));
     }
