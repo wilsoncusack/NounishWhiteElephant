@@ -4,10 +4,27 @@ pragma solidity ^0.8.13;
 import {WhiteElephantNFT} from "./WhiteElephantNFT.sol";
 
 contract WhiteElephant {
-    WhiteElephantNFT public nft;
+    /// @dev when game already Exists
+    error GameExists();
+    /// @dev when msg.sender is not `currentParticipantTurn`
+    error NotTurn();
+    /// @dev when tokenID was not minted in game
+    error InvalidTokenIDForGame();
+    /// @dev when tokenID has already been stolen twice
+    error MaxSteals();
+    /// @dev when tokenID was just stolen
+    error JustStolen();
+    /// @dev when game is over
+    error GameOver();
+
+    event StartGame(bytes32 indexed gameID, Game game);
+    event Open(bytes32 indexed gameID, address indexed player, uint256 indexed tokenId);
+    event Steal(bytes32 indexed gameID, address indexed stealer, uint256 indexed tokenId, address stolenFrom);
 
     struct Game {
+        /// @dev the addresses in this game, ordered how they should have turns
         address[] participants;
+        /// @dev any unique value, probably timestamp best
         uint256 nonce;
     }
 
@@ -30,24 +47,13 @@ contract WhiteElephant {
         LastStealInfo lastStealInfo;
     }
 
-    mapping(bytes32 => GameState) internal _state;
-    // how many times has a tokenID been stolen
+    WhiteElephantNFT public nft;
+
+    /// @notice how many times has a tokenID been stolen
     mapping(uint256 => uint256) public timesStolen;
-    // what game does a token belong to
+    /// @notice what game a given tokenID was minted in
     mapping(uint256 => bytes32) public tokenGameID;
-
-    /// @dev when game already Exists
-    error GameExists();
-    /// @dev when msg.sender is not up to go
-    error NotTurn();
-    error InvalidTokenIDForGame();
-    error MaxSteals();
-    error JustStolen();
-    error GameOver();
-
-    event StartGame(bytes32 indexed gameID, Game game);
-    event Open(bytes32 indexed gameID, address indexed player, uint256 indexed tokenId);
-    event Steal(bytes32 indexed gameID, address indexed stealer, uint256 indexed tokenId, address stolenFrom);
+    mapping(bytes32 => GameState) internal _state;
 
     /// @notice starts a game
     /// @dev does not check participant addresses, address(0) or other incorrect

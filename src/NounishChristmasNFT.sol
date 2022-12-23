@@ -7,6 +7,29 @@ import {WhiteElephantNFT, ERC721} from "./WhiteElephantNFT.sol";
 import {WhiteElephant} from "./WhiteElephant.sol";
 
 contract NounishChristmasNFT is WhiteElephantNFT, Owned {
+    /* 
+    characters:
+    1. cardinal
+    2. swan
+    3. block head
+    4. dad
+    5. defender
+    6. self
+    7. hero
+    8. hoo
+    9. lamp
+    10. mean one
+    11. miner
+    12. mrs claus
+    13. noggleman 
+    14. noggletree 
+    15. nutcracker 
+    16. patridge pear tree
+    17. rat king
+    18. reindeer 
+    19. reindeer 
+     */
+
     uint256 _nonce;
     WhiteElephant whiteElephant;
 
@@ -29,7 +52,7 @@ contract NounishChristmasNFT is WhiteElephantNFT, Owned {
             _balanceOf[to]++;
         }
 
-        _ownerOf[id] = to;
+        nftInfo[id].owner = to;
 
         delete getApproved[id];
 
@@ -38,6 +61,7 @@ contract NounishChristmasNFT is WhiteElephantNFT, Owned {
 
     function transferFrom(address from, address to, uint256 id) public override {
         require(whiteElephant.state(whiteElephant.tokenGameID(id)).gameOver, "GAME_IN_PROGRESS");
+        super.transferFrom(from, to, id);
     }
 
     function tokenURI(uint256 id) public view override returns (string memory) {

@@ -253,6 +253,8 @@ contract NounishWhiteElephantTest is Test {
         vm.prank(address(3));
         whiteElephant.open(game);
         ERC721 nft = whiteElephant.nft();
+        vm.prank(address(1));
         nft.transferFrom(address(1), address(2), 0);
+        assertEq(nft.ownerOf(0), address(2));
     }
 }
