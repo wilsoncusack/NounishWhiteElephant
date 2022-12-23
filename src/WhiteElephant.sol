@@ -25,7 +25,7 @@ contract WhiteElephant {
         // for whose turn, use participants[round - 1]
         uint8 round;
         bool gameOver;
-        // used to track turns after a steal
+        // used to track who goes next after a steal
         address nextToGo;
         LastStealInfo lastStealInfo;
     }
@@ -66,13 +66,10 @@ contract WhiteElephant {
 
     function open(Game calldata game) external {
         bytes32 _gameID = gameID(game);
-        if (_state[_gameID].gameOver) {
-            revert GameOver();
-        }
 
-        if (!_isTurn(_gameID, game)) {
-            revert NotTurn();
-        }
+        _checkGameOver(_gameID);
+
+        _checkTurn(_gameID, game);
 
         uint8 newRoundCount = _state[_gameID].round + 1;
         _state[_gameID].round = newRoundCount;
@@ -90,13 +87,10 @@ contract WhiteElephant {
 
     function steal(Game calldata game, uint256 tokenID) external {
         bytes32 _gameID = gameID(game);
-        if (_state[_gameID].gameOver) {
-            revert GameOver();
-        }
 
-        if (!_isTurn(_gameID, game)) {
-            revert NotTurn();
-        }
+        _checkGameOver(_gameID);
+
+        _checkTurn(_gameID, game);
 
         if (_gameID != tokenGameID[tokenID]) {
             revert InvalidTokenIDForGame();
@@ -107,7 +101,7 @@ contract WhiteElephant {
         }
 
         uint8 currentRound = _state[_gameID].round;
-        if (currentRound == _state[_gameID].lastStealInfo.round) {
+        if (_state[_gameID].round == _state[_gameID].lastStealInfo.round) {
             if (_state[_gameID].lastStealInfo.lastStolenID == tokenID) {
                 revert JustStolen();
             }
@@ -124,18 +118,30 @@ contract WhiteElephant {
         emit Steal(_gameID, msg.sender, tokenID, currentOwner);
     }
 
-    function gameID(Game calldata game) public view returns (bytes32) {
-        return keccak256(abi.encode(game));
-    }
-
     function state(bytes32 _gameID) external view returns (GameState memory) {
         return _state[_gameID];
     }
 
-    function _isTurn(bytes32 _gameID, Game calldata game) internal view returns (bool) {
+    function currentParticipantTurn(bytes32 _gameID, Game calldata game) public view returns (address) {
         address next = _state[_gameID].nextToGo;
-        if (next != address(0)) return msg.sender == next;
+        if (next != address(0)) return next;
 
-        return msg.sender == game.participants[_state[_gameID].round - 1];
+        return game.participants[_state[_gameID].round - 1];
+    }
+
+    function gameID(Game calldata game) public pure returns (bytes32) {
+        return keccak256(abi.encode(game));
+    }
+
+    function _checkTurn(bytes32 _gameID, Game calldata game) internal view {
+        if (currentParticipantTurn(_gameID, game) != msg.sender) {
+            revert NotTurn();
+        }
+    }
+
+    function _checkGameOver(bytes32 _gameID) internal view {
+        if (_state[_gameID].gameOver) {
+            revert GameOver();
+        }
     }
 }
