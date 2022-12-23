@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-import {WhiteElephantNFT} from './WhiteElephantNFT.sol';
+import {WhiteElephantNFT} from "./WhiteElephantNFT.sol";
 
 contract WhiteElephant {
     WhiteElephantNFT public nft;
-    
+
     struct Game {
         address[] participants;
         uint256 nonce;
@@ -33,7 +33,7 @@ contract WhiteElephant {
     mapping(bytes32 => GameState) internal _state;
     // how many times has a tokenID been stolen
     mapping(uint256 => uint256) public timesStolen;
-    // what game does a token belong to 
+    // what game does a token belong to
     mapping(uint256 => bytes32) public tokenGameID;
 
     /// @dev when game already Exists
@@ -51,7 +51,7 @@ contract WhiteElephant {
 
     /// @dev doesn't check for participants
     /// address(0) or incorrect address could leave game
-    // unable to progress 
+    // unable to progress
     function startGame(Game calldata game) external returns (bytes32 _gameID) {
         _gameID = gameID(game);
 
@@ -79,7 +79,7 @@ contract WhiteElephant {
         if (newRoundCount > game.participants.length) {
             _state[_gameID].gameOver = true;
         }
-        
+
         _state[_gameID].nextToGo = address(0);
 
         uint256 tokenID = nft.mint(msg.sender);
@@ -114,10 +114,7 @@ contract WhiteElephant {
         }
 
         timesStolen[tokenID] += 1;
-        _state[_gameID].lastStealInfo = LastStealInfo({
-            lastStolenID: uint64(tokenID),
-            round: currentRound
-        });
+        _state[_gameID].lastStealInfo = LastStealInfo({lastStolenID: uint64(tokenID), round: currentRound});
 
         address currentOwner = nft.ownerOf(tokenID);
         _state[_gameID].nextToGo = currentOwner;

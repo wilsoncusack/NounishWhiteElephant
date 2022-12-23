@@ -3,8 +3,8 @@ pragma solidity ^0.8.13;
 
 import {Owned} from "solmate/auth/Owned.sol";
 
-import {WhiteElephantNFT, ERC721} from './WhiteElephantNFT.sol';
-import {WhiteElephant} from './WhiteElephant.sol';
+import {WhiteElephantNFT, ERC721} from "./WhiteElephantNFT.sol";
+import {WhiteElephant} from "./WhiteElephant.sol";
 
 contract NounishChristmasNFT is WhiteElephantNFT, Owned {
     uint256 _nonce;
@@ -16,7 +16,7 @@ contract NounishChristmasNFT is WhiteElephantNFT, Owned {
 
     function mint(address to) external override onlyOwner returns (uint256 id) {
         _mint(to, (id = _nonce++));
-        require(id < 1 << 64, 'MAX_MINT');
+        require(id < 1 << 64, "MAX_MINT");
     }
 
     /// @dev steal should be guarded as an owner/admin function
@@ -36,12 +36,8 @@ contract NounishChristmasNFT is WhiteElephantNFT, Owned {
         emit Transfer(from, to, id);
     }
 
-    function transferFrom(
-        address from,
-        address to,
-        uint256 id
-    ) public override {
-        require(whiteElephant.state(whiteElephant.tokenGameID(id)).gameOver, 'GAME_IN_PROGRESS');
+    function transferFrom(address from, address to, uint256 id) public override {
+        require(whiteElephant.state(whiteElephant.tokenGameID(id)).gameOver, "GAME_IN_PROGRESS");
     }
 
     function tokenURI(uint256 id) public view override returns (string memory) {

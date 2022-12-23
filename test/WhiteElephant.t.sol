@@ -16,10 +16,7 @@ contract WhiteElephantTest is Test {
         participants[0] = address(1);
         participants[1] = address(2);
         participants[2] = address(3);
-        game =  WhiteElephant.Game({
-            participants: participants,
-            nonce: block.timestamp
-        });
+        game = WhiteElephant.Game({participants: participants, nonce: block.timestamp});
     }
 
     /// start game ///

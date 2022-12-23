@@ -19,15 +19,12 @@ contract NounishWhiteElephantTest is Test {
         participants[0] = address(1);
         participants[1] = address(2);
         participants[2] = address(3);
-        game =  WhiteElephant.Game({
-            participants: participants,
-            nonce: block.timestamp
-        });
+        game = WhiteElephant.Game({participants: participants, nonce: block.timestamp});
     }
 
     /// open ///
 
-    /// reverts if not there turn 
+    /// reverts if not there turn
     /// not in game, or they are up next but there was a steal, or just going out of order
     function testOpenTransfersNFT() public {
         bytes32 id = whiteElephant.startGame(game);
@@ -136,7 +133,15 @@ contract NounishWhiteElephantTest is Test {
         assertEq(address(1), whiteElephant.state(id).nextToGo);
     }
 
-    // TODO updates last steal info
+    function testStealUpdatesLastStealInfo() public {
+        bytes32 id = whiteElephant.startGame(game);
+        vm.prank(address(1));
+        whiteElephant.open(game);
+        vm.prank(address(2));
+        whiteElephant.steal(game, 0);
+        assertEq(0, whiteElephant.state(id).lastStealInfo.lastStolenID);
+        assertEq(2, whiteElephant.state(id).lastStealInfo.round);
+    }
 
     function testStealDoesNotAllowStealingSameGiftBack() public {
         bytes32 id = whiteElephant.startGame(game);
@@ -160,8 +165,6 @@ contract NounishWhiteElephantTest is Test {
         vm.prank(address(3));
         whiteElephant.steal(game, 0);
     }
-
-    /// test steal reverts if invalid tokenId
 
     function testStealRevertsIfInvalidId() public {
         bytes32 id = whiteElephant.startGame(game);
