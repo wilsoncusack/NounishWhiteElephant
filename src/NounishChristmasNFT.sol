@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-import {WhiteElephantNFT, ERC721} from "./WhiteElephantNFT.sol";
-import {WhiteElephant} from "./WhiteElephant.sol";
+import {WhiteElephantNFT, ERC721} from "./base/WhiteElephantNFT.sol";
+import {WhiteElephant} from "./base/WhiteElephant.sol";
 
 contract NounishChristmasNFT is WhiteElephantNFT {
     /* 
@@ -46,11 +46,33 @@ contract NounishChristmasNFT is WhiteElephantNFT {
     3. Noggles Pro
 
     tint:
-
+    1. ffffff
+    2. 000000
+    3. 2a46ff
+    4. f38b7c
+    5. 7c3c58
+    6. 16786c
+    7. 36262d
+    8. cb7300
+    9. 06534a
+    10. 369f49
+    11. ff0e0e
+    12. fd5442
+    13. 453f41
 
     background color: 
+    1. 3e5d25
+    2. 100d98
+    3. 403037
+    4. 326849
+    5. 651d19
 
     noggle color: 
+    1. 513340
+    2. bd2d24
+    3. 4ab49a
+    4. 0827f5
+    5. f0c14d
 
      */
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import {NounishERC721, ERC721} from "../../src/NounishERC721.sol";
+import {NounishERC721, ERC721} from "../../src/base/NounishERC721.sol";
 
 contract MockERC721 is NounishERC721 {
     constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}

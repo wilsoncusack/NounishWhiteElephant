@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/WhiteElephant.sol";
+import "../src/base/WhiteElephant.sol";
 
 contract WhiteElephantTest is Test {
     event StartGame(bytes32 indexed gameID, WhiteElephant.Game game);

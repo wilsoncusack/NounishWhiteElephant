@@ -1,4 +1,4 @@
-ERC721Test:invariantMetadata() (runs: 256, calls: 3840, reverts: 2165)
+ERC721Test:invariantMetadata() (runs: 256, calls: 3840, reverts: 2163)
 ERC721Test:testApprove() (gas: 78828)
 ERC721Test:testApproveAll() (gas: 31218)
 ERC721Test:testApproveBurn() (gas: 66156)

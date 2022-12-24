@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import {Owned} from "solmate/auth/Owned.sol";
 import {SafeTransferLib} from "solmate/utils/SafeTransferLib.sol";
 
-import {WhiteElephant} from "./WhiteElephant.sol";
+import {WhiteElephant} from "./base/WhiteElephant.sol";
 import {NounishChristmasNFT} from "./NounishChristmasNFT.sol";
 
 contract NounishWhiteElephant is WhiteElephant, Owned {
