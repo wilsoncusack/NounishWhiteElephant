@@ -156,7 +156,7 @@ library NounishDescriptors {
         } else if (background == 5) {
             return "Spice";
         }
-        return '';
+        return "";
     }
 
     function backgroundColorHex(uint8 background) internal pure returns (string memory) {

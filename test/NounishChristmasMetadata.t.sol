@@ -26,7 +26,7 @@ contract NounishChristmasMetadataTest is Test {
     function testAttributes() public {
         emit log_string(
             metadata.attributes(
-                keccak256(abi.encode('')),
+                keccak256(abi.encode("")),
                 NounishERC721.Info({
                     character: 1,
                     tint: 1,

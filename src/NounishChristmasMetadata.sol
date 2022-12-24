@@ -25,7 +25,11 @@ contract NounishChristmasMetadata {
         characterRenderHelper3 = renderHelper3;
     }
 
-    function tokenURI(uint256 id, bytes32 gameID, NounishERC721.Info calldata info) external view returns (string memory) {
+    function tokenURI(uint256 id, bytes32 gameID, NounishERC721.Info calldata info)
+        external
+        view
+        returns (string memory)
+    {
         return string(
             string.concat(
                 "data:application/json;base64,",

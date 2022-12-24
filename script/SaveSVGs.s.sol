@@ -23,22 +23,7 @@ contract saveSVGs is Script {
             new TwentyThroughTwentyEightCharacterRenderHelper(),
             new TwentyNineThroughThirtyTwoCharacterRenderHelper()
         );
-        vm.writeFile(
-                                string.concat(
-                                    rootPath,
-                                    "/svgs/",
-                                    "test.svg"
-                                ),
-                                'hey'
-                            );
-
-                            vm.writeFile(
-                                string.concat(
-                                    rootPath,
-                                    "/new.svg"
-                                ),
-                                'hey'
-                            );
+        
         string memory s;
         for (uint8 character = 1; character < 33; character++) {
             for (uint8 tint = 1; tint < 2; tint++) {
