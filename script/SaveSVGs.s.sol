@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
+import "forge-std/Test.sol";
 import {Strings} from "lib/openzeppelin-contracts/contracts/utils/Strings.sol";
 
 import {NounishERC721} from "../src/base/NounishERC721.sol";
@@ -13,7 +14,7 @@ import {TwentyThroughTwentyEightCharacterRenderHelper} from
 import {TwentyNineThroughThirtyTwoCharacterRenderHelper} from
     "../src/CharacterContracts/TwentyNineThroughThirtyTwoCharacterRenderHelper.sol";
 
-contract saveSVGs is Script {
+contract saveSVGs is Script, Test {
     using Strings for uint256;
 
     function run() public {
@@ -23,7 +24,7 @@ contract saveSVGs is Script {
             new TwentyThroughTwentyEightCharacterRenderHelper(),
             new TwentyNineThroughThirtyTwoCharacterRenderHelper()
         );
-        
+
         string memory s;
         for (uint8 character = 1; character < 33; character++) {
             for (uint8 tint = 1; tint < 2; tint++) {
@@ -42,10 +43,12 @@ contract saveSVGs is Script {
                                     })
                                 )
                             );
+                            // emit log_string(s);
+                            emit log_string(rootPath);
                             vm.writeFile(
                                 string.concat(
                                     rootPath,
-                                    "/svgs/",
+                                    "/check/",
                                     NounishDescriptors.tintColorName(tint),
                                     "-",
                                     NounishDescriptors.characterName(character),

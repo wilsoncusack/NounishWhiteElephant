@@ -160,6 +160,10 @@ contract WhiteElephant {
     /// game = {participants: address[], nonce: uint256}
     /// @return participant the address that is up to go next
     function currentParticipantTurn(bytes32 _gameID, Game calldata game) public view virtual returns (address) {
+        if (_state[_gameID].gameOver) {
+            return address(0);
+        }
+        
         address next = _state[_gameID].nextToGo;
         if (next != address(0)) return next;
 
