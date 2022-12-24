@@ -25,7 +25,7 @@ contract NounishChristmasMetadata {
         characterRenderHelper3 = renderHelper3;
     }
 
-    function tokenURI(uint256 id, NounishERC721.Info calldata info) external view returns (string memory) {
+    function tokenURI(uint256 id, bytes32 gameID, NounishERC721.Info calldata info) external view returns (string memory) {
         return string(
             string.concat(
                 "data:application/json;base64,",
@@ -41,9 +41,9 @@ contract NounishChristmasMetadata {
                             '", "description":"',
                             "Nounish Christmas NFTs are created by playing the Nounish White Elephant game, where players can open new NFTs by minting and steal opened NFTs from others.",
                             '", "attributes": ',
-                            attributes(info),
+                            attributes(gameID, info),
                             ', "image": "' "data:image/svg+xml;base64,",
-                            Base64.encode(svg(info)),
+                            Base64.encode(bytes(svg(info))),
                             '"}'
                         )
                     )
@@ -52,9 +52,9 @@ contract NounishChristmasMetadata {
         );
     }
 
-    function svg(NounishERC721.Info calldata info) public view returns (bytes memory) {
-        return abi.encodePacked(
-            '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="background-color:#',
+    function svg(NounishERC721.Info calldata info) public view returns (string memory) {
+        return string.concat(
+            '<svg width="500" height="500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="background-color:#',
             NounishDescriptors.backgroundColorHex(info.backgroundColor),
             '" >',
             '<style type="text/css">',
@@ -71,9 +71,11 @@ contract NounishChristmasMetadata {
         );
     }
 
-    function attributes(NounishERC721.Info calldata info) public view returns (string memory) {
+    function attributes(bytes32 gameID, NounishERC721.Info calldata info) public view returns (string memory) {
         return string.concat(
             "[",
+            _traitTypeString("game ID", uint256(gameID).toString()),
+            ",",
             _traitTypeString("character", NounishDescriptors.characterName(info.character)),
             ",",
             _traitTypeString("tint", NounishDescriptors.tintColorName(info.tint)),

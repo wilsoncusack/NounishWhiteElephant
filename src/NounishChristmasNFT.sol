@@ -61,7 +61,7 @@ contract NounishChristmasNFT is WhiteElephantNFT {
     }
 
     function tokenURI(uint256 id) public view override returns (string memory) {
-        return metadata.tokenURI(id, _nftInfo[id]);
+        return metadata.tokenURI(id, whiteElephant.tokenGameID(id), _nftInfo[id]);
     }
 
     function nftInfo(uint256 id) public view returns (Info memory) {

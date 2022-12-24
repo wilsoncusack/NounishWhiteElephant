@@ -26,6 +26,7 @@ contract NounishChristmasMetadataTest is Test {
     function testAttributes() public {
         emit log_string(
             metadata.attributes(
+                keccak256(abi.encode('')),
                 NounishERC721.Info({
                     character: 1,
                     tint: 1,
@@ -42,7 +43,7 @@ contract NounishChristmasMetadataTest is Test {
         string memory s = string(
             metadata.svg(
                 NounishERC721.Info({
-                    character: 1,
+                    character: 29,
                     tint: 1,
                     backgroundColor: 1,
                     noggleType: 1,
@@ -66,6 +67,7 @@ contract NounishChristmasMetadataTest is Test {
             string(
                 metadata.tokenURI(
                     1,
+                    keccak256(abi.encode("1")),
                     NounishERC721.Info({
                         character: 1,
                         tint: 1,

@@ -11,8 +11,8 @@ contract NounishWhiteElephant is WhiteElephant, Owned {
     error InsufficientPayment();
     error DoneForNow();
 
-    uint256 participantFee;
-    uint256 endTimestamp;
+    uint256 public participantFee;
+    uint256 public endTimestamp;
 
     constructor(uint256 fee, uint256 _endTimestamp, NounishChristmasMetadata _metadata) Owned(msg.sender) {
         nft = new NounishChristmasNFT(_metadata);
@@ -20,6 +20,7 @@ contract NounishWhiteElephant is WhiteElephant, Owned {
         endTimestamp = _endTimestamp;
     }
 
+    /// @inheritdoc WhiteElephant
     function startGame(Game calldata game) public payable override returns (bytes32 _gameID) {
         if (block.timestamp > endTimestamp) {
             revert DoneForNow();
@@ -31,6 +32,7 @@ contract NounishWhiteElephant is WhiteElephant, Owned {
         return super.startGame(game);
     }
 
+    /// @inheritdoc WhiteElephant
     function open(Game calldata game) public override {
         if (block.timestamp > endTimestamp) {
             revert DoneForNow();
@@ -38,6 +40,7 @@ contract NounishWhiteElephant is WhiteElephant, Owned {
         super.open(game);
     }
 
+    /// @inheritdoc WhiteElephant
     function steal(Game calldata game, uint256 tokenID) public override {
         if (block.timestamp > endTimestamp) {
             revert DoneForNow();

@@ -198,7 +198,7 @@ library NounishDescriptors {
         } else if (tint == 11) {
             return "Jolly";
         } else if (tint == 12) {
-            return "453f41";
+            return "Coal";
         } else if (tint == 13) {
             return "Snow White";
         }
