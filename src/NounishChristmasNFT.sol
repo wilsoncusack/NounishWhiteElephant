@@ -7,12 +7,13 @@ import {WhiteElephant} from "./base/WhiteElephant.sol";
 import {NounishChristmasMetadata} from "./NounishChristmasMetadata.sol";
 
 contract NounishChristmasNFT is WhiteElephantNFT {
-    uint256 _nonce;
-    WhiteElephant whiteElephant;
-    NounishChristmasMetadata metadata;
+    uint256 private _nonce;
+    WhiteElephant public whiteElephant;
+    NounishChristmasMetadata public metadata;
 
-    constructor() ERC721("Nounish White Elephant Christmas", "NWEC") {
+    constructor(NounishChristmasMetadata _metadata) ERC721("Nounish White Elephant Christmas", "NWEC") {
         whiteElephant = WhiteElephant(msg.sender);
+        metadata = _metadata;
     }
 
     function mint(address to) external override returns (uint256 id) {
@@ -21,12 +22,12 @@ contract NounishChristmasNFT is WhiteElephantNFT {
         _mint(to, (id = _nonce++));
         require(id < 1 << 64, "MAX_MINT");
 
-        bytes32 h = keccak256(abi.encode(id, msg.sender, block.timestamp));
+        bytes32 h = keccak256(abi.encode(id, to, block.timestamp));
         _nftInfo[id].character = uint8(h[0]) % 32 + 1;
         _nftInfo[id].tint = uint8(h[1]) % 12 + 1;
         _nftInfo[id].backgroundColor = uint8(h[2]) % 4 + 1;
-        _nftInfo[id].noggleType = uint8(h[2]) % 3 + 1;
-        _nftInfo[id].noggleColor = uint8(h[2]) % 4 + 1;
+        _nftInfo[id].noggleType = uint8(h[3]) % 3 + 1;
+        _nftInfo[id].noggleColor = uint8(h[4]) % 4 + 1;
     }
 
     /// @dev steal should be guarded as an owner/admin function

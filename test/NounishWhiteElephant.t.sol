@@ -5,16 +5,19 @@ import "forge-std/Test.sol";
 import {ERC721} from "solmate/tokens/ERC721.sol";
 
 import "../src/NounishWhiteElephant.sol";
+import {ICharacterSVGRenderer} from "../src/interfaces/ICharacterSVGRenderer.sol";
 
 contract NounishWhiteElephantTest is Test {
     event Open(bytes32 indexed gameID, address indexed player, uint256 indexed tokenId);
     event Steal(bytes32 indexed gameID, address indexed stealer, uint256 indexed tokenId, address stolenFrom);
 
     NounishWhiteElephant public whiteElephant;
+    ICharacterSVGRenderer renderHelper = ICharacterSVGRenderer(address(1));
     WhiteElephant.Game game;
 
     function setUp() public {
-        whiteElephant = new NounishWhiteElephant(0, block.timestamp + 1);
+        whiteElephant =
+            new NounishWhiteElephant(0, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper));
         address[] memory participants = new address[](3);
         participants[0] = address(1);
         participants[1] = address(2);
@@ -24,18 +27,27 @@ contract NounishWhiteElephantTest is Test {
 
     /// start game ///
     function testRevertsIfFeeInsufficient() public {
-        whiteElephant = new NounishWhiteElephant(0.01 ether, block.timestamp + 1);
+        whiteElephant =
+        new NounishWhiteElephant(0.01 ether, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper));
         vm.deal(address(this), 1 ether);
         vm.expectRevert(NounishWhiteElephant.InsufficientPayment.selector);
         whiteElephant.startGame{value: 0.001 ether * 3}(game);
     }
 
     function testDoesNotRevertsIfFeeSufficient() public {
-        whiteElephant = new NounishWhiteElephant(0.01 ether, block.timestamp + 1 days);
+        whiteElephant =
+        new NounishWhiteElephant(0.01 ether, block.timestamp + 1 days, new NounishChristmasMetadata(renderHelper, renderHelper));
         vm.deal(address(this), 1 ether);
         whiteElephant.startGame{value: 0.01 ether * 3}(game);
         bytes32 id = whiteElephant.gameID(game);
         assertEq(1, whiteElephant.state(id).round);
+    }
+
+    function testRevertsIfPastEndTimestamp() public {
+        whiteElephant =
+        new NounishWhiteElephant(0.01 ether, block.timestamp - 1, new NounishChristmasMetadata(renderHelper, renderHelper));
+        vm.expectRevert(NounishWhiteElephant.DoneForNow.selector);
+        whiteElephant.startGame(game);
     }
 
     /// transferFees ///
@@ -47,12 +59,17 @@ contract NounishWhiteElephantTest is Test {
     }
 
     function testTransferFeesWorks() public {
-        whiteElephant = new NounishWhiteElephant(0.01 ether, block.timestamp + 1);
+        whiteElephant =
+        new NounishWhiteElephant(0.01 ether, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper));
         vm.deal(address(this), 1 ether);
         whiteElephant.startGame{value: 0.01 ether * 3}(game);
         whiteElephant.transferFees(address(1), 0.03 ether);
         assertEq(address(1).balance, 0.03 ether);
     }
+
+    /// update metadata ///
+
+    /// set end timestamp ///
 
     /// open ///
 
@@ -136,6 +153,13 @@ contract NounishWhiteElephantTest is Test {
         vm.prank(address(1));
         whiteElephant.open(game);
         vm.expectRevert(WhiteElephant.GameOver.selector);
+        whiteElephant.open(game);
+    }
+
+    function testOpenRevertsIfPastEndTimestamp() public {
+        bytes32 id = whiteElephant.startGame(game);
+        vm.warp(block.timestamp + 2);
+        vm.expectRevert(NounishWhiteElephant.DoneForNow.selector);
         whiteElephant.open(game);
     }
 
@@ -266,6 +290,13 @@ contract NounishWhiteElephantTest is Test {
         whiteElephant.open(game);
         vm.startPrank(address(4));
         vm.expectRevert(WhiteElephant.MaxSteals.selector);
+        whiteElephant.steal(game, 0);
+    }
+
+    function testStealRevertsIfPastEndTimestamp() public {
+        bytes32 id = whiteElephant.startGame(game);
+        vm.warp(block.timestamp + 2);
+        vm.expectRevert(NounishWhiteElephant.DoneForNow.selector);
         whiteElephant.steal(game, 0);
     }
 

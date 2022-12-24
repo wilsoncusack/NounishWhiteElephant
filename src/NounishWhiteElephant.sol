@@ -14,8 +14,8 @@ contract NounishWhiteElephant is WhiteElephant, Owned {
     uint256 participantFee;
     uint256 endTimestamp;
 
-    constructor(uint256 fee, uint256 _endTimestamp) Owned(msg.sender) {
-        nft = new NounishChristmasNFT();
+    constructor(uint256 fee, uint256 _endTimestamp, NounishChristmasMetadata _metadata) Owned(msg.sender) {
+        nft = new NounishChristmasNFT(_metadata);
         participantFee = fee;
         endTimestamp = _endTimestamp;
     }

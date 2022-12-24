@@ -2,7 +2,7 @@
 pragma solidity >=0.8.0;
 
 import {NoggleSVGs} from "./NoggleSVGs.sol";
-import {CharacterSVGs} from "./CharacterSVGs.sol";
+import {OneThroughSixCharacterSVGs} from "./OneThroughSixCharacterSVGs.sol";
 
 library NounishDescriptors {
     function characterName(uint8 character) internal pure returns (string memory) {
@@ -48,7 +48,7 @@ library NounishDescriptors {
             return "Santa S";
         } else if (character == 21) {
             return "Santa Max Pro";
-        } else if (character == 23) {
+        } else if (character == 22) {
             return "Skeleton";
         } else if (character == 23) {
             return "Chunky Snowman";
@@ -74,71 +74,20 @@ library NounishDescriptors {
         return "";
     }
 
+    /// @dev wanted to make the most of contract space, only renders through character 6
     function characterSVG(uint8 character) internal pure returns (string memory) {
         if (character == 1) {
-            return CharacterSVGs.cardinal();
+            return OneThroughSixCharacterSVGs.cardinal();
         } else if (character == 2) {
-            return CharacterSVGs.swan();
+            return OneThroughSixCharacterSVGs.swan();
         } else if (character == 3) {
-            return "Blockhead";
+            return OneThroughSixCharacterSVGs.blockhead();
         } else if (character == 4) {
-            return "Dad";
+            return OneThroughSixCharacterSVGs.dad();
         } else if (character == 5) {
-            return "Trout Sniffer";
+            return OneThroughSixCharacterSVGs.troutSniffer();
         } else if (character == 6) {
-            return "Elf";
-        } else if (character == 7) {
-            return "Mothertrucker";
-        } else if (character == 8) {
-            return "Girl";
-        } else if (character == 9) {
-            return "Lamp";
-        } else if (character == 10) {
-            return "Mean One";
-        } else if (character == 11) {
-            return "Miner";
-        } else if (character == 12) {
-            return "Mrs. Claus";
-        } else if (character == 13) {
-            return "Noggleman";
-        } else if (character == 14) {
-            return "Noggle Tree";
-        } else if (character == 15) {
-            return "Nutcracker";
-        } else if (character == 16) {
-            return "Partridge in a Pear Tree";
-        } else if (character == 17) {
-            return "Rat King";
-        } else if (character == 18) {
-            return "Reindeer S";
-        } else if (character == 19) {
-            return "Reindeer Pro Max";
-        } else if (character == 20) {
-            return "Santa S";
-        } else if (character == 21) {
-            return "Santa Max Pro";
-        } else if (character == 23) {
-            return "Skeleton";
-        } else if (character == 23) {
-            return "Chunky Snowman";
-        } else if (character == 24) {
-            return "Slender Snowman";
-        } else if (character == 25) {
-            return "Snowman Pro Max";
-        } else if (character == 26) {
-            return "Sugar Plum Fairy";
-        } else if (character == 27) {
-            return "Short Thief";
-        } else if (character == 28) {
-            return "Tall Thief";
-        } else if (character == 29) {
-            return "Train";
-        } else if (character == 30) {
-            return "Christmas Tree";
-        } else if (character == 31) {
-            return "Yeti S";
-        } else if (character == 32) {
-            return "Yeti Pro Max";
+            return OneThroughSixCharacterSVGs.elf();
         }
         return "";
     }

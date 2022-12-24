@@ -5,22 +5,17 @@ import "forge-std/Test.sol";
 
 import {NounishERC721} from "../src/base/NounishERC721.sol";
 import {NounishChristmasMetadata} from "../src/NounishChristmasMetadata.sol";
-import {CharacterSVGs} from "../src/libraries/CharacterSVGs.sol";
-
-contract Dummy {
-    function test() public {
-        CharacterSVGs.cardinal();
-        CharacterSVGs.swan();
-    }
-}
+import {SevenThroughNineteenCharacterRenderHelper} from
+    "../src/CharacterContracts/SevenThroughNineteenCharacterRenderHelper.sol";
+import {TwentyThroughThirtyTwoCharacterRenderHelper} from
+    "../src/CharacterContracts/TwentyThroughThirtyTwoCharacterRenderHelper.sol";
 
 contract NounishChristmasMetadataTest is Test {
     NounishChristmasMetadata metadata;
 
     function setUp() public {
-        Dummy d = new Dummy();
-        d.test();
-        metadata = new NounishChristmasMetadata();
+        metadata =
+        new NounishChristmasMetadata(new SevenThroughNineteenCharacterRenderHelper(), new TwentyThroughThirtyTwoCharacterRenderHelper());
     }
 
     function testAttributes() public {
@@ -39,20 +34,25 @@ contract NounishChristmasMetadataTest is Test {
     }
 
     function testSvg() public {
-        emit log_string(
-            string(
-                metadata.svg(
-                    NounishERC721.Info({
-                        character: 1,
-                        tint: 1,
-                        backgroundColor: 1,
-                        noggleType: 1,
-                        noggleColor: 1,
-                        owner: address(0)
-                    })
-                )
+        string memory s = string(
+            metadata.svg(
+                NounishERC721.Info({
+                    character: 1,
+                    tint: 1,
+                    backgroundColor: 1,
+                    noggleType: 1,
+                    noggleColor: 1,
+                    owner: address(0)
+                })
             )
-            );
+        );
+        string[] memory inputs = new string[](4);
+        inputs[0] = "echo";
+        inputs[1] = "yooo";
+        // ABI encoded "gm", as a hex string
+        inputs[2] = ">";
+        inputs[3] = "test.svg";
+        // vm.ffi(inputs);
     }
 
     function testTokenURI() public {

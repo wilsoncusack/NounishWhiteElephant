@@ -6,9 +6,21 @@ import {Base64} from "base64/base64.sol";
 
 import {NounishERC721} from "./base/NounishERC721.sol";
 import {NounishDescriptors} from "./libraries/NounishDescriptors.sol";
+import {ICharacterSVGRenderer} from "./interfaces/ICharacterSVGRenderer.sol";
 
 contract NounishChristmasMetadata {
     using Strings for uint256;
+
+    ICharacterSVGRenderer characterRenderHelper1;
+    ICharacterSVGRenderer characterRenderHelper2;
+    // CharacterSVGRender render3;
+
+    constructor(ICharacterSVGRenderer renderHelper1, ICharacterSVGRenderer renderHelper2) {
+        characterRenderHelper1 = renderHelper1;
+        characterRenderHelper2 = renderHelper2;
+        // render2 = _render2;
+        // render3 = _render3;
+    }
 
     function tokenURI(uint256 id, NounishERC721.Info calldata info) external view returns (string memory) {
         return string(
@@ -20,6 +32,8 @@ contract NounishChristmasMetadata {
                             '{"name":"' "#",
                             id.toString(),
                             " - ",
+                            NounishDescriptors.tintColorName(info.tint),
+                            " ",
                             NounishDescriptors.characterName(info.character),
                             '", "description":"',
                             "Nounish Christmas NFTs are created by playing the Nounish White Elephant game, where players can open new NFTs by minting and steal opened NFTs from others.",
@@ -46,7 +60,10 @@ contract NounishChristmasMetadata {
             NounishDescriptors.tintColorHex(info.tint),
             ";}",
             "</style>",
-            NounishDescriptors.characterSVG(info.character),
+            '<rect x="0" y="0" width="24" height="24" fill="#',
+            NounishDescriptors.backgroundColorHex(info.backgroundColor),
+            '"/>',
+            characterSVG(info.character),
             NounishDescriptors.noggleTypeSVG(info.noggleType),
             "</svg>"
         );
@@ -66,6 +83,16 @@ contract NounishChristmasMetadata {
             _traitTypeString("background color", NounishDescriptors.backgroundColorName(info.backgroundColor)),
             "]"
         );
+    }
+
+    function characterSVG(uint8 character) public view returns (string memory) {
+        if (character < 7) {
+            return NounishDescriptors.characterSVG(character);
+        } else if (character < 20) {
+            return characterRenderHelper1.characterSVG(character);
+        } else {
+            return characterRenderHelper2.characterSVG(character);
+        }
     }
 
     function _traitTypeString(string memory t, string memory v) internal pure returns (string memory) {
