@@ -1,2 +1,3 @@
 deploy-goerli :; source .env && forge script script/NounishWhiteElephant.s.sol:NounishWhiteElephantScript --rpc-url $${GOERLI_RPC_URL}  --private-key $${GOERLI_PRIVATE_KEY} --broadcast --verify
 deploy-mainnet :; source .env && forge script script/NounishWhiteElephant.s.sol:NounishWhiteElephantScript --rpc-url $${MAINNET_RPC_URL}  --private-key $${MAINNET_PRIVATE_KEY} --broadcast --verify
+deploy-local :; source .env && forge script script/NounishWhiteElephant.s.sol:NounishWhiteElephantScript --rpc-url $${LOCAL_RPC_URL}  --private-key $${LOCAL_PRIVATE_KEY} --broadcast --verify
