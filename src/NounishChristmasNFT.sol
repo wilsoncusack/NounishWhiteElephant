@@ -31,7 +31,7 @@ contract NounishChristmasNFT is WhiteElephantNFT {
     }
 
     /// @dev steal should be guarded as an owner/admin function
-    function steal(address from, address to, uint256 id) external override returns (uint256) {
+    function steal(address from, address to, uint256 id) external override {
         require(msg.sender == address(whiteElephant), "FORBIDDEN");
 
         // Underflow of the sender's balance is impossible because we check for

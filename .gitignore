@@ -9,3 +9,7 @@ out/
 
 # Dotenv file
 .env
+
+svgs/
+
+.DS_Store

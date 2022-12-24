@@ -17,7 +17,7 @@ contract NounishWhiteElephantTest is Test {
 
     function setUp() public {
         whiteElephant =
-            new NounishWhiteElephant(0, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper));
+        new NounishWhiteElephant(0, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper, renderHelper));
         address[] memory participants = new address[](3);
         participants[0] = address(1);
         participants[1] = address(2);
@@ -28,7 +28,7 @@ contract NounishWhiteElephantTest is Test {
     /// start game ///
     function testRevertsIfFeeInsufficient() public {
         whiteElephant =
-        new NounishWhiteElephant(0.01 ether, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper));
+        new NounishWhiteElephant(0.01 ether, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper, renderHelper));
         vm.deal(address(this), 1 ether);
         vm.expectRevert(NounishWhiteElephant.InsufficientPayment.selector);
         whiteElephant.startGame{value: 0.001 ether * 3}(game);
@@ -36,7 +36,7 @@ contract NounishWhiteElephantTest is Test {
 
     function testDoesNotRevertsIfFeeSufficient() public {
         whiteElephant =
-        new NounishWhiteElephant(0.01 ether, block.timestamp + 1 days, new NounishChristmasMetadata(renderHelper, renderHelper));
+        new NounishWhiteElephant(0.01 ether, block.timestamp + 1 days, new NounishChristmasMetadata(renderHelper, renderHelper, renderHelper));
         vm.deal(address(this), 1 ether);
         whiteElephant.startGame{value: 0.01 ether * 3}(game);
         bytes32 id = whiteElephant.gameID(game);
@@ -45,7 +45,7 @@ contract NounishWhiteElephantTest is Test {
 
     function testRevertsIfPastEndTimestamp() public {
         whiteElephant =
-        new NounishWhiteElephant(0.01 ether, block.timestamp - 1, new NounishChristmasMetadata(renderHelper, renderHelper));
+        new NounishWhiteElephant(0.01 ether, block.timestamp - 1, new NounishChristmasMetadata(renderHelper, renderHelper, renderHelper));
         vm.expectRevert(NounishWhiteElephant.DoneForNow.selector);
         whiteElephant.startGame(game);
     }
@@ -60,7 +60,7 @@ contract NounishWhiteElephantTest is Test {
 
     function testTransferFeesWorks() public {
         whiteElephant =
-        new NounishWhiteElephant(0.01 ether, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper));
+        new NounishWhiteElephant(0.01 ether, block.timestamp + 1, new NounishChristmasMetadata(renderHelper, renderHelper, renderHelper));
         vm.deal(address(this), 1 ether);
         whiteElephant.startGame{value: 0.01 ether * 3}(game);
         whiteElephant.transferFees(address(1), 0.03 ether);

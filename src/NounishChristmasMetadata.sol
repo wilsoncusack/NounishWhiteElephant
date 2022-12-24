@@ -13,13 +13,16 @@ contract NounishChristmasMetadata {
 
     ICharacterSVGRenderer characterRenderHelper1;
     ICharacterSVGRenderer characterRenderHelper2;
-    // CharacterSVGRender render3;
+    ICharacterSVGRenderer characterRenderHelper3;
 
-    constructor(ICharacterSVGRenderer renderHelper1, ICharacterSVGRenderer renderHelper2) {
+    constructor(
+        ICharacterSVGRenderer renderHelper1,
+        ICharacterSVGRenderer renderHelper2,
+        ICharacterSVGRenderer renderHelper3
+    ) {
         characterRenderHelper1 = renderHelper1;
         characterRenderHelper2 = renderHelper2;
-        // render2 = _render2;
-        // render3 = _render3;
+        characterRenderHelper3 = renderHelper3;
     }
 
     function tokenURI(uint256 id, NounishERC721.Info calldata info) external view returns (string memory) {
@@ -51,7 +54,9 @@ contract NounishChristmasMetadata {
 
     function svg(NounishERC721.Info calldata info) public view returns (bytes memory) {
         return abi.encodePacked(
-            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">',
+            '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="background-color:#',
+            NounishDescriptors.backgroundColorHex(info.backgroundColor),
+            '" >',
             '<style type="text/css">',
             ".noggles{fill:#",
             NounishDescriptors.noggleColorHex(info.noggleColor),
@@ -60,9 +65,6 @@ contract NounishChristmasMetadata {
             NounishDescriptors.tintColorHex(info.tint),
             ";}",
             "</style>",
-            '<rect x="0" y="0" width="24" height="24" fill="#',
-            NounishDescriptors.backgroundColorHex(info.backgroundColor),
-            '"/>',
             characterSVG(info.character),
             NounishDescriptors.noggleTypeSVG(info.noggleType),
             "</svg>"
@@ -90,8 +92,10 @@ contract NounishChristmasMetadata {
             return NounishDescriptors.characterSVG(character);
         } else if (character < 20) {
             return characterRenderHelper1.characterSVG(character);
-        } else {
+        } else if (character < 29) {
             return characterRenderHelper2.characterSVG(character);
+        } else {
+            return characterRenderHelper3.characterSVG(character);
         }
     }
 

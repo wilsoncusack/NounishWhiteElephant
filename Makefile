@@ -1,0 +1,1 @@
+deploy-goerli :; source .env && forge script script/NounishWhiteElephant.s.sol:NounishWhiteElephantScript --rpc-url $${GOERLI_RPC_URL}  --private-key $${GOERLI_PRIVATE_KEY} --broadcast
