@@ -6,3 +6,7 @@
 	path = lib/solmate
 	url = https://github.com/transmissions11/solmate
 	branch = v7
+[submodule "lib/base64"]
+	path = lib/base64
+	url = https://github.com/brechtpd/base64
+	branch = v1.1.0
