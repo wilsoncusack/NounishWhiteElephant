@@ -10,6 +10,6 @@ contract NounishWhiteElephantScript is Script {
 
     function run() public {
         vm.broadcast();
-        new NounishWhiteElephant(0.01 ether);
+        new NounishWhiteElephant(0.01 ether, 1672531199);
     }
 }

@@ -4,9 +4,12 @@ pragma solidity ^0.8.13;
 import {WhiteElephantNFT, ERC721} from "./base/WhiteElephantNFT.sol";
 import {WhiteElephant} from "./base/WhiteElephant.sol";
 
+import {NounishChristmasMetadata} from "./NounishChristmasMetadata.sol";
+
 contract NounishChristmasNFT is WhiteElephantNFT {
     uint256 _nonce;
     WhiteElephant whiteElephant;
+    NounishChristmasMetadata metadata;
 
     constructor() ERC721("Nounish White Elephant Christmas", "NWEC") {
         whiteElephant = WhiteElephant(msg.sender);
@@ -50,11 +53,17 @@ contract NounishChristmasNFT is WhiteElephantNFT {
         super.transferFrom(from, to, id);
     }
 
-    function tokenURI(uint256 id) public view override returns (string memory) {
-        return "";
+    function updateMetadata(NounishChristmasMetadata _metadata) external {
+        require(msg.sender == address(whiteElephant), "FORBIDDEN");
+
+        metadata = _metadata;
     }
 
-    function nftInfo(uint256 id) public view returns (Info memory){
+    function tokenURI(uint256 id) public view override returns (string memory) {
+        return metadata.tokenURI(id, _nftInfo[id]);
+    }
+
+    function nftInfo(uint256 id) public view returns (Info memory) {
         return _nftInfo[id];
     }
 }

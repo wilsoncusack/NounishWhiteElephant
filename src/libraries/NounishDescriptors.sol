@@ -1,74 +1,146 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
+import {NoggleSVGs} from "./NoggleSVGs.sol";
+import {CharacterSVGs} from "./CharacterSVGs.sol";
+
 library NounishDescriptors {
     function characterName(uint8 character) internal pure returns (string memory) {
         if (character == 1) {
-            return 'Cardinal';
+            return "Cardinal";
         } else if (character == 2) {
-            return 'Swan';
+            return "Swan";
         } else if (character == 3) {
-            return 'Blockhead';
+            return "Blockhead";
         } else if (character == 4) {
-            return 'Dad';
+            return "Dad";
         } else if (character == 5) {
-            return 'Trout Sniffer';
+            return "Trout Sniffer";
         } else if (character == 6) {
-            return 'Elf';
+            return "Elf";
         } else if (character == 7) {
-            return 'Mothertrucker';
+            return "Mothertrucker";
         } else if (character == 8) {
-            return 'Girl';
+            return "Girl";
         } else if (character == 9) {
-            return 'Lamp';
+            return "Lamp";
         } else if (character == 10) {
-            return 'Mean One';
+            return "Mean One";
         } else if (character == 11) {
-            return 'Miner';
+            return "Miner";
         } else if (character == 12) {
-            return 'Mrs. Claus';
+            return "Mrs. Claus";
         } else if (character == 13) {
-            return 'Noggleman';
+            return "Noggleman";
         } else if (character == 14) {
-            return 'Noggle Tree';
+            return "Noggle Tree";
         } else if (character == 15) {
-            return 'Nutcracker';
+            return "Nutcracker";
         } else if (character == 16) {
-            return 'Partridge in a Pear Tree';
+            return "Partridge in a Pear Tree";
         } else if (character == 17) {
-            return 'Rat King';
+            return "Rat King";
         } else if (character == 18) {
-            return 'Reindeer S';
+            return "Reindeer S";
         } else if (character == 19) {
-            return 'Reindeer Pro Max';
+            return "Reindeer Pro Max";
         } else if (character == 20) {
-            return 'Santa S';
+            return "Santa S";
         } else if (character == 21) {
-            return 'Santa Max Pro';
+            return "Santa Max Pro";
         } else if (character == 23) {
-            return 'Skeleton';
+            return "Skeleton";
         } else if (character == 23) {
-            return 'Chunky Snowman';
+            return "Chunky Snowman";
         } else if (character == 24) {
-            return 'Slender Snowman';
+            return "Slender Snowman";
         } else if (character == 25) {
-            return 'Snowman Pro Max';
+            return "Snowman Pro Max";
         } else if (character == 26) {
-            return 'Sugar Plum Fairy';
+            return "Sugar Plum Fairy";
         } else if (character == 27) {
-            return 'Short Thief';
+            return "Short Thief";
         } else if (character == 28) {
-            return 'Tall Thief';
+            return "Tall Thief";
         } else if (character == 29) {
-            return 'Train';
+            return "Train";
         } else if (character == 30) {
-            return 'Christmas Tree';
+            return "Christmas Tree";
         } else if (character == 31) {
-            return 'Yeti S';
+            return "Yeti S";
         } else if (character == 32) {
-            return 'Yeti Pro Max';
+            return "Yeti Pro Max";
         }
-        return '';
+        return "";
+    }
+
+    function characterSVG(uint8 character) internal pure returns (string memory) {
+        if (character == 1) {
+            return CharacterSVGs.cardinal();
+        } else if (character == 2) {
+            return CharacterSVGs.swan();
+        } else if (character == 3) {
+            return "Blockhead";
+        } else if (character == 4) {
+            return "Dad";
+        } else if (character == 5) {
+            return "Trout Sniffer";
+        } else if (character == 6) {
+            return "Elf";
+        } else if (character == 7) {
+            return "Mothertrucker";
+        } else if (character == 8) {
+            return "Girl";
+        } else if (character == 9) {
+            return "Lamp";
+        } else if (character == 10) {
+            return "Mean One";
+        } else if (character == 11) {
+            return "Miner";
+        } else if (character == 12) {
+            return "Mrs. Claus";
+        } else if (character == 13) {
+            return "Noggleman";
+        } else if (character == 14) {
+            return "Noggle Tree";
+        } else if (character == 15) {
+            return "Nutcracker";
+        } else if (character == 16) {
+            return "Partridge in a Pear Tree";
+        } else if (character == 17) {
+            return "Rat King";
+        } else if (character == 18) {
+            return "Reindeer S";
+        } else if (character == 19) {
+            return "Reindeer Pro Max";
+        } else if (character == 20) {
+            return "Santa S";
+        } else if (character == 21) {
+            return "Santa Max Pro";
+        } else if (character == 23) {
+            return "Skeleton";
+        } else if (character == 23) {
+            return "Chunky Snowman";
+        } else if (character == 24) {
+            return "Slender Snowman";
+        } else if (character == 25) {
+            return "Snowman Pro Max";
+        } else if (character == 26) {
+            return "Sugar Plum Fairy";
+        } else if (character == 27) {
+            return "Short Thief";
+        } else if (character == 28) {
+            return "Tall Thief";
+        } else if (character == 29) {
+            return "Train";
+        } else if (character == 30) {
+            return "Christmas Tree";
+        } else if (character == 31) {
+            return "Yeti S";
+        } else if (character == 32) {
+            return "Yeti Pro Max";
+        }
+        return "";
     }
 
     function noggleTypeName(uint8 noggleType) internal pure returns (string memory) {
@@ -79,139 +151,138 @@ library NounishDescriptors {
         } else if (noggleType == 3) {
             return "Noggles Pro Max";
         }
-        return '';
+        return "";
     }
 
     function noggleTypeSVG(uint8 noggleType) internal pure returns (string memory) {
         if (noggleType == 1) {
-            return "";
+            return NoggleSVGs.basic();
         } else if (noggleType == 2) {
-            return "";
+            return NoggleSVGs.cool();
         } else if (noggleType == 3) {
-            return "";
+            return NoggleSVGs.large();
         }
-        return '';
+        return "";
     }
 
     function noggleColorName(uint8 noggleColor) internal pure returns (string memory) {
         if (noggleColor == 1) {
-            return 'Dark Plum';
+            return "Dark Plum";
         } else if (noggleColor == 2) {
-            return 'Warm Red';
+            return "Warm Red";
         } else if (noggleColor == 3) {
-            return 'Peppermint';
+            return "Peppermint";
         } else if (noggleColor == 4) {
-            return 'Cold Blue';
+            return "Cold Blue";
         } else if (noggleColor == 5) {
-            return 'Ring-a-Ding';
+            return "Ring-a-Ding";
         }
-        return '';
+        return "";
     }
 
     function noggleColorHex(uint8 noggleColor) internal pure returns (string memory) {
         if (noggleColor == 1) {
-            return '513340';
+            return "513340";
         } else if (noggleColor == 2) {
-            return 'bd2d24';
+            return "bd2d24";
         } else if (noggleColor == 3) {
-            return '4ab49a';
+            return "4ab49a";
         } else if (noggleColor == 4) {
-            return '0827f5';
+            return "0827f5";
         } else if (noggleColor == 5) {
-            return 'f0c14d';
+            return "f0c14d";
         }
-        return '';
+        return "";
     }
 
     function backgroundColorName(uint8 background) internal pure returns (string memory) {
         if (background == 1) {
-            return 'Douglas Fir';
+            return "Douglas Fir";
         } else if (background == 2) {
-            return 'Night';
+            return "Night";
         } else if (background == 3) {
-            return 'Rooftop';
+            return "Rooftop";
         } else if (background == 4) {
-            return 'Mistletoe';
+            return "Mistletoe";
         } else if (background == 5) {
-            return 'Spice';
+            return "Spice";
         }
     }
 
     function backgroundColorHex(uint8 background) internal pure returns (string memory) {
         if (background == 1) {
-            return '3e5d25';
+            return "3e5d25";
         } else if (background == 2) {
-            return '100d98';
+            return "100d98";
         } else if (background == 3) {
-            return '403037';
+            return "403037";
         } else if (background == 4) {
-            return '326849';
+            return "326849";
         } else if (background == 5) {
-            return '651d19';
+            return "651d19";
         }
-        return '';
+        return "";
     }
 
     function tintColorName(uint8 tint) internal pure returns (string memory) {
         if (tint == 1) {
-            return 'Boot Black';
+            return "Boot Black";
         } else if (tint == 2) {
-            return 'Fairydust';
+            return "Fairydust";
         } else if (tint == 3) {
-            return 'Elf';
+            return "Elf";
         } else if (tint == 4) {
-            return 'Plum';
+            return "Plum";
         } else if (tint == 5) {
-            return 'Explorer';
+            return "Explorer";
         } else if (tint == 6) {
-            return 'Hot Cocoa';
+            return "Hot Cocoa";
         } else if (tint == 7) {
-            return 'Carrot';
+            return "Carrot";
         } else if (tint == 8) {
-            return 'Spruce';
+            return "Spruce";
         } else if (tint == 9) {
-            return 'Holly';
+            return "Holly";
         } else if (tint == 10) {
-            return 'Sleigh';
+            return "Sleigh";
         } else if (tint == 11) {
-            return 'Jolly';
+            return "Jolly";
         } else if (tint == 12) {
-            return '453f41';
+            return "453f41";
         } else if (tint == 13) {
-            return 'Snow White';
+            return "Snow White";
         }
-        return '';
+        return "";
     }
 
     function tintColorHex(uint8 tint) internal pure returns (string memory) {
         if (tint == 1) {
-            return '000000';
+            return "000000";
         } else if (tint == 2) {
-            return '2a46ff';
+            return "2a46ff";
         } else if (tint == 3) {
-            return 'f38b7c';
+            return "f38b7c";
         } else if (tint == 4) {
-            return '7c3c58';
+            return "7c3c58";
         } else if (tint == 5) {
-            return '16786c';
+            return "16786c";
         } else if (tint == 6) {
-            return '36262d';
+            return "36262d";
         } else if (tint == 7) {
-            return 'cb7300';
+            return "cb7300";
         } else if (tint == 8) {
-            return '06534a';
+            return "06534a";
         } else if (tint == 9) {
-            return '369f49';
+            return "369f49";
         } else if (tint == 10) {
-            return 'ff0e0e';
+            return "ff0e0e";
         } else if (tint == 11) {
-            return 'fd5442';
+            return "fd5442";
         } else if (tint == 12) {
-            return '453f41';
+            return "453f41";
         } else if (tint == 13) {
-            return 'ffffff';
+            return "ffffff";
         }
-        return '';
+        return "";
     }
-
 }
