@@ -88,6 +88,13 @@ contract NounishChristmasNFT is WhiteElephantNFT {
 
         _mint(to, (id = _nonce++));
         require(id < 1 << 64, "MAX_MINT");
+
+        bytes32 h = keccak256(abi.encode(id, msg.sender, block.timestamp));
+        _nftInfo[id].character = uint8(h[0]) % 32 + 1;
+        _nftInfo[id].tint = uint8(h[1]) % 12 + 1;
+        _nftInfo[id].backgroundColor = uint8(h[2]) % 4 + 1;
+        _nftInfo[id].noggleType = uint8(h[2]) % 3 + 1;
+        _nftInfo[id].noggleColor = uint8(h[2]) % 4 + 1;
     }
 
     /// @dev steal should be guarded as an owner/admin function
@@ -102,7 +109,7 @@ contract NounishChristmasNFT is WhiteElephantNFT {
             _balanceOf[to]++;
         }
 
-        nftInfo[id].owner = to;
+        _nftInfo[id].owner = to;
 
         delete getApproved[id];
 
@@ -116,5 +123,9 @@ contract NounishChristmasNFT is WhiteElephantNFT {
 
     function tokenURI(uint256 id) public view override returns (string memory) {
         return "";
+    }
+
+    function nftInfo(uint256 id) public view returns (Info memory){
+        return _nftInfo[id];
     }
 }

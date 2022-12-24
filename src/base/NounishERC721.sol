@@ -13,10 +13,10 @@ abstract contract NounishERC721 is ERC721 {
         address owner;
     }
 
-    mapping(uint256 => Info) public nftInfo;
+    mapping(uint256 => Info) public _nftInfo;
 
     function transferFrom(address from, address to, uint256 id) public virtual override {
-        require(from == nftInfo[id].owner, "WRONG_FROM");
+        require(from == _nftInfo[id].owner, "WRONG_FROM");
 
         require(to != address(0), "INVALID_RECIPIENT");
 
@@ -32,7 +32,7 @@ abstract contract NounishERC721 is ERC721 {
             _balanceOf[to]++;
         }
 
-        nftInfo[id].owner = to;
+        _nftInfo[id].owner = to;
 
         delete getApproved[id];
 
@@ -40,7 +40,7 @@ abstract contract NounishERC721 is ERC721 {
     }
 
     function approve(address spender, uint256 id) public override {
-        address owner = nftInfo[id].owner;
+        address owner = _nftInfo[id].owner;
 
         require(msg.sender == owner || isApprovedForAll[owner][msg.sender], "NOT_AUTHORIZED");
 
@@ -54,26 +54,26 @@ abstract contract NounishERC721 is ERC721 {
     // }
 
     function ownerOf(uint256 id) public view override returns (address owner) {
-        require((owner = nftInfo[id].owner) != address(0), "NOT_MINTED");
+        require((owner = _nftInfo[id].owner) != address(0), "NOT_MINTED");
     }
 
     function _mint(address to, uint256 id) internal override {
         require(to != address(0), "INVALID_RECIPIENT");
 
-        require(nftInfo[id].owner == address(0), "ALREADY_MINTED");
+        require(_nftInfo[id].owner == address(0), "ALREADY_MINTED");
 
         // Counter overflow is incredibly unrealistic.
         unchecked {
             _balanceOf[to]++;
         }
 
-        nftInfo[id].owner = to;
+        _nftInfo[id].owner = to;
 
         emit Transfer(address(0), to, id);
     }
 
     function _burn(uint256 id) internal override {
-        address owner = nftInfo[id].owner;
+        address owner = _nftInfo[id].owner;
 
         require(owner != address(0), "NOT_MINTED");
 
@@ -82,7 +82,7 @@ abstract contract NounishERC721 is ERC721 {
             _balanceOf[owner]--;
         }
 
-        delete nftInfo[id];
+        delete _nftInfo[id];
 
         delete getApproved[id];
 

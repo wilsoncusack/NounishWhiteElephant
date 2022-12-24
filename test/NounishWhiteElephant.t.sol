@@ -64,6 +64,12 @@ contract NounishWhiteElephantTest is Test {
         vm.prank(address(1));
         whiteElephant.open(game);
         assertEq(whiteElephant.nft().balanceOf(address(1)), 1);
+        NounishChristmasNFT nft = NounishChristmasNFT(address(whiteElephant.nft()));
+        assertTrue(nft.nftInfo(0).character > 0);
+        assertTrue(nft.nftInfo(0).tint > 0);
+        assertTrue(nft.nftInfo(0).backgroundColor > 0);
+        assertTrue(nft.nftInfo(0).noggleColor > 0);
+        assertTrue(nft.nftInfo(0).noggleType > 0);
     }
 
     function testOpenSetsTokenGameID() public {
