@@ -56,8 +56,6 @@ contract NounishWhiteElephantTest is Test {
 
     /// open ///
 
-    /// reverts if not there turn
-    /// not in game, or they are up next but there was a steal, or just going out of order
     function testOpenTransfersNFT() public {
         bytes32 id = whiteElephant.startGame(game);
         assertEq(whiteElephant.nft().balanceOf(address(1)), 0);
