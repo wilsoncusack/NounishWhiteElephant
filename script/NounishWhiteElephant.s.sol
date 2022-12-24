@@ -18,12 +18,13 @@ contract NounishWhiteElephantScript is Script, Test {
 
     function run() public {
         vm.startBroadcast();
-        NounishWhiteElephant whiteElephant =
+        NounishWhiteElephant whiteElephant = NounishWhiteElephant(0xb6554ce686cf21c642c3a28144a09879ae3f2ee1)
         new NounishWhiteElephant(0.01 ether, 1672531199, new NounishChristmasMetadata(
             new SevenThroughNineteenCharacterRenderHelper(),
             new TwentyThroughTwentyEightCharacterRenderHelper(),
             new TwentyNineThroughThirtyTwoCharacterRenderHelper()
         ));
+
         whiteElephant.setOwner(0xbF8060106D2e83C106915A575BaeA3dc90c892a6);
     }
 }
